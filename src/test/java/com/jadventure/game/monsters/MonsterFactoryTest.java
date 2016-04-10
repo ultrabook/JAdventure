@@ -35,7 +35,7 @@ public class MonsterFactoryTest {
 	}
 	
 	@Test
-	public void monsterTypeGenerationTest(){
+	public void localizedMonsterGenerationTest(){
 		location.setLocationType(LocationType.FOREST);
         player.setLocation(location);
 		Monster forestMonster = factory.generateMonster(player);
@@ -49,9 +49,11 @@ public class MonsterFactoryTest {
 		location.setLocationType(LocationType.MOUNTAIN);
         player.setLocation(location);
 		Monster mountainMonster = factory.generateMonster(player);
-		assertTrue(mountainMonster instanceof Giant || mountainMonster instanceof Wolf || 
+
+		//There is a bug in Giant so giant is commented out
+		assertTrue(/*mountainMonster instanceof Giant ||*/ mountainMonster instanceof Wolf || 
 				mountainMonster instanceof Troll || mountainMonster instanceof Skeleton);
-		
+	
 		location.setLocationType(LocationType.CAVE);
         player.setLocation(location);
 		Monster caveMonster = factory.generateMonster(player);
