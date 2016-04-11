@@ -33,6 +33,7 @@ public class CommandCollectionTest {
 	Location location;
 	CommandCollection collection;
 	PrintStream stdout;
+	ByteArrayOutputStream outContent;
 	
 	@Before
 	public void setUp(){
@@ -60,6 +61,9 @@ public class CommandCollectionTest {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        
+        outContent = new ByteArrayOutputStream();
+	    System.setOut(new PrintStream(outContent));
 	}
 	
 	@After
@@ -68,9 +72,7 @@ public class CommandCollectionTest {
 	}
 	
 	@Test
-	public void commandHelpTest(){	
-		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-	    System.setOut(new PrintStream(outContent));
+	public void commandHelpTest(){			
 		collection.command_help();
 		int n = countLines(outContent.toString());
 		
@@ -79,18 +81,13 @@ public class CommandCollectionTest {
 	}
 	
 	@Test 
-	public void commandSaveTest(){
-		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-	    System.setOut(new PrintStream(outContent));  
+	public void commandSaveTest(){		 
 		collection.command_save();	
 		assertTrue(outContent.toString().contains("data was saved"));
 	}
 	
 	@Test
-	public void commandMonsterTest(){
-		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-	    System.setOut(new PrintStream(outContent));
-		
+	public void commandMonsterTest(){	
 		collection.command_m();
 		assertTrue(outContent.toString().contains("no monsters"));
 		
@@ -102,10 +99,7 @@ public class CommandCollectionTest {
 	}
 	
 	@Test
-	public void commandGoTest() throws DeathException{
-		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-	    System.setOut(new PrintStream(outContent));
-	    
+	public void commandGoTest() throws DeathException{		
 		player.setName("player1");
         LocationRepository locationRepo = GameBeans.getLocationRepository(player.getName());
         player.setLocation(locationRepo.getInitialLocation());
@@ -116,11 +110,21 @@ public class CommandCollectionTest {
 	}
 	
 	@Test
-	public void commandInspect(){
-		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-	    System.setOut(new PrintStream(outContent));
+	public void commandInspectTest(){
 		collection.command_i("");
 		assertTrue(outContent.toString().contains("Item doesn't exist"));
+	}
+	
+	@Test
+	public void commandViewTest(){
+		collection.command_v("b");
+		assertTrue(outContent.toString().contains("Backpack"));
+		
+		collection.command_v("s");
+		assertTrue(outContent.toString().contains("Player name:"));
+		
+		collection.command_v("e");
+		assertTrue(outContent.toString().contains("Equipped Items:"));
 	}
 	
 	private static int countLines(String str){
