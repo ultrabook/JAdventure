@@ -13,8 +13,6 @@ import java.util.Collection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import com.google.gson.internal.bind.CollectionTypeAdapterFactory;
 import com.jadventure.game.DeathException;
